@@ -167,7 +167,7 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.List[tp.List[str]]:
         for i in numbr:
             grid[ind1][ind2] = i
             solve(grid)
-            check = find_possible_values(grid, pos)
+            check = find_empty_positions(grid)
             checkind = check[0]
             if checkind == -1:
                 return grid
