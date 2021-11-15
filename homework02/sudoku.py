@@ -167,7 +167,9 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.List[tp.List[str]]:
         for i in numbr:
             grid[ind1][ind2] = i
             solve(grid)
-            if find_possible_values(grid, pos)[0] == -1:
+            check = find_possible_values(grid, pos)
+    	    checkind = pos[0]
+            if checkind == -1:
                 return grid
             grid[ind1][ind2] = "."
     return [["."]]
