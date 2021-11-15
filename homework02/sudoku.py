@@ -31,6 +31,7 @@ def display(grid: tp.List[tp.List[str]]) -> None:
         if str(row) in "25":
             print(line)
     print()
+    return 0
 
 
 def group(values: tp.List[T], n: int) -> tp.List[tp.List[T]]:
@@ -99,7 +100,7 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     return [a for b in res for a in b]
 
 
-def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[int, int]]:
+def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Tuple[int, int]:
     """Найти первую свободную позицию в пазле
 
     >>> find_empty_positions([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']])
@@ -117,7 +118,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
                 ind1 = i
                 ind2 = j
                 break
-    return tuple(ind1, ind2)
+    return (ind1, ind2)
 
 
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
