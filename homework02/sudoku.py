@@ -171,7 +171,7 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
             solve(grid)
             if fi == 1:
                 return grid
-            grid[ind1][ind2] = '.'
+            grid[ind1][ind2] = "."
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
