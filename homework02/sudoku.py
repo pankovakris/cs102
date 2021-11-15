@@ -172,7 +172,7 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.List[tp.List[str]]:
             if fi == 1:
                 return grid
             grid[ind1][ind2] = "."
-    return [['.']]
+    return [["."]]
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
