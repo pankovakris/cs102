@@ -192,8 +192,8 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
             else:
                 b.add(k)
         c = set()
-        for k in get_block(solution, (i, i)) or k == ".":
-            if k in c:
+        for k in get_block(solution, (i, i)):
+            if k in c or k == ".":
                 return False
             else:
                 c.add(k)
