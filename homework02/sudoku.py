@@ -180,19 +180,19 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     # TODO: Add doctests with bad puzzles
     for i in range(len(solution)):
         a = set()
-        for k in grid[i]:
+        for k in solution[i]:
             if k in a:
                 return False
             else:
                 a.add(k)
         b = set()
-        for k in get_col(grid, (0, i)):
+        for k in get_col(solution, (0, i)):
             if k in b:
                 return False
             else:
                 b.add(k)
         c = set()
-        for k in get_block(grid, (i, i)):
+        for k in get_block(solution, (i, i)):
             if k in c:
                 return False
             else:
