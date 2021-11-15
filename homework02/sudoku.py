@@ -95,7 +95,7 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     colstart = int(3 * (ind2 // 3))
     res = []
     for i in range(3):
-        res.append(grid[rowstart + i][colstart:colstart+3])
+        res.append(grid[rowstart + i][colstart:colstart + 3])
     return [a for b in res for a in b]
 
 
