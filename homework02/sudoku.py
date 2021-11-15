@@ -117,7 +117,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
                 ind1 = i
                 ind2 = j
                 break
-    return (ind1, ind2)
+    return ind1, ind2
 
 
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
