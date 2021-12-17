@@ -237,7 +237,6 @@ def solve_maze(
         k += 1
         make_step(grid, k)
     m = shortest_path(grid, exits[1])
-    m = list(m)
     return grid, m
 
 
