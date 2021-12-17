@@ -154,10 +154,11 @@ def shortest_path(
     while grid[cor1][cor2] != 1:
         for x, y in ways:
             if 0 <= cor1 + x < len(grid) and 0 <= cor2 + y < len(grid[0]):
-                if grid[cor1 + x][cor2 + y] == k - 1:
-                    cor1, cor2 = cor1 + x, cor2 + y
-                    k -= 1
-                    m.append((cor1, cor2))
+                if grid[cor1 + x][cor2 + y] != '■':
+                    if grid[cor1 + x][cor2 + y] == k - 1:
+                        cor1, cor2 = cor1 + x, cor2 + y
+                        k -= 1
+                        m.append((cor1, cor2))
     return m
 
 
