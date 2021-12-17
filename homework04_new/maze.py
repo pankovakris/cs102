@@ -248,7 +248,7 @@ def add_path_to_grid(
 
     :param grid:
     :param path:
-    :return:
+    :return: k
     """
 
     if path:
