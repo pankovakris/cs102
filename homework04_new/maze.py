@@ -5,6 +5,7 @@ from typing import List, Optional, Tuple, Union
 import pandas as pd
 from numpy.lib.function_base import kaiser
 
+
 def create_grid(rows: int = 15, cols: int = 15) -> List[List[Union[str, int]]]:
     return [["■"] * cols for _ in range(rows)]
 
