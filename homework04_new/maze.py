@@ -149,7 +149,7 @@ def shortest_path(
     m = []
     cor1, cor2 = exit_coord[0], exit_coord[1]
     m.append((cor1, cor2))
-    k = grid[cor1][cor2]
+    k = int(grid[cor1][cor2])
     ways = [[0, 1], [0, -1], [1, 0], [-1, 0]]
     while grid[cor1][cor2] != 1:
         for x, y in ways:
