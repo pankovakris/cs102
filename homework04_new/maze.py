@@ -11,7 +11,7 @@ def create_grid(rows: int = 15, cols: int = 15) -> List[List[Union[str, int]]]:
 
 
 def remove_wall(
-        grid: List[List[Union[str, int]]], coord: Tuple[int, int]
+    grid: List[List[Union[str, int]]], coord: Tuple[int, int]
 ) -> List[List[Union[str, int]]]:
     """
 
@@ -20,17 +20,17 @@ def remove_wall(
     :return:
     """
 
-    if grid[coord[0]][coord[1]] != ' ':
-        grid[coord[0]][coord[1]] = ' '
+    if grid[coord[0]][coord[1]] != " ":
+        grid[coord[0]][coord[1]] = " "
     elif coord[1] + 1 < len(grid[0]) - 1:
-        grid[coord[0]][coord[1] + 1] = ' '
+        grid[coord[0]][coord[1] + 1] = " "
     elif coord[0] - 1 > 1:
-        grid[coord[0] - 1][coord[1]] = ' '
+        grid[coord[0] - 1][coord[1]] = " "
     return grid
 
 
 def bin_tree_maze(
-        rows: int = 15, cols: int = 15, random_exit: bool = True
+    rows: int = 15, cols: int = 15, random_exit: bool = True
 ) -> List[List[Union[str, int]]]:
     """
 
@@ -72,7 +72,9 @@ def bin_tree_maze(
     if random_exit:
         x_in, x_out = randint(0, rows - 1), randint(0, rows - 1)
         y_in = randint(0, cols - 1) if x_in in (0, rows - 1) else choice((0, cols - 1))
-        y_out = randint(0, cols - 1) if x_out in (0, rows - 1) else choice((0, cols - 1))
+        y_out = (
+            randint(0, cols - 1) if x_out in (0, rows - 1) else choice((0, cols - 1))
+        )
     else:
         x_in, y_in = 0, cols - 2
         x_out, y_out = rows - 1, 1
@@ -93,18 +95,18 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     columns = len(grid[0]) - 1
 
     for i in range(columns):
-        if grid[0][i] == 'X':
+        if grid[0][i] == "X":
             ans.append((0, i))
     for j in range(rows):
-        if grid[j][0] == 'X':
+        if grid[j][0] == "X":
             ans.append((j, 0))
 
     if len(ans) != 2:
         for i in range(columns):
-            if grid[rows][i] == 'X':
+            if grid[rows][i] == "X":
                 ans.append((rows, i))
         for j in range(rows):
-            if grid[j][columns] == 'X':
+            if grid[j][columns] == "X":
                 ans.append((j, columns))
     if len(ans) > 1:
         if ans[0][1] > ans[1][1]:
@@ -138,7 +140,7 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
 
 
 def shortest_path(
-        grid: List[List[Union[str, int]]], exit_coord: Tuple[int, int]
+    grid: List[List[Union[str, int]]], exit_coord: Tuple[int, int]
 ) -> Optional[Union[Tuple[int, int], List[Tuple[int, int]]]]:
     """
 
@@ -169,30 +171,36 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
     :return:
     """
 
-    if coord == (0, 0) or coord == (len(grid) - 1, len(grid[0]) - 1) or coord == (len(grid) - 1, 0) or coord == (
-    0, len(grid[0]) - 1):
+    if (
+        coord == (0, 0)
+        or coord == (len(grid) - 1, len(grid[0]) - 1)
+        or coord == (len(grid) - 1, 0)
+        or coord == (0, len(grid[0]) - 1)
+    ):
         return True
     elif coord[0] == 0:
-        if grid[1][coord[1]] != ' ':
+        if grid[1][coord[1]] != " ":
             return True
 
     elif coord[1] == 0:
-        if grid[coord[0]][1] != ' ':
+        if grid[coord[0]][1] != " ":
             return True
 
     elif coord[0] == len(grid) - 1:
-        if grid[len(grid) - 2][coord[1]] != ' ':
+        if grid[len(grid) - 2][coord[1]] != " ":
             return True
 
     elif coord[1] == len(grid[0]) - 1:
-        if grid[coord[0]][len(grid[0]) - 2] != ' ':
+        if grid[coord[0]][len(grid[0]) - 2] != " ":
             return True
     return False
 
 
 def solve_maze(
-        grid: List[List[Union[str, int]]],
-) -> Tuple[List[List[Union[str, int]]], Optional[Union[Tuple[int, int], List[Tuple[int, int]]]]]:
+    grid: List[List[Union[str, int]]],
+) -> Tuple[
+    List[List[Union[str, int]]], Optional[Union[Tuple[int, int], List[Tuple[int, int]]]]
+]:
     """
 
     :param grid:
@@ -221,7 +229,7 @@ def solve_maze(
 
     for i in range(rows):
         for j in range(cols):
-            if grid[i][j] == ' ':
+            if grid[i][j] == " ":
                 grid[i][j] = 0
 
     grid[exits[0][0]][exits[0][1]] = 1
@@ -237,7 +245,8 @@ def solve_maze(
 
 
 def add_path_to_grid(
-        grid: List[List[Union[str, int]]], path: Optional[Union[Tuple[int, int], List[Tuple[int, int]]]]
+    grid: List[List[Union[str, int]]],
+    path: Optional[Union[Tuple[int, int], List[Tuple[int, int]]]],
 ) -> List[List[Union[str, int]]]:
     """
 
