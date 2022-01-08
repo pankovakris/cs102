@@ -34,9 +34,7 @@ def encrypt_vigenere(plaintext: str, keyword: str) -> str:
         elif plaintext[i].isalpha() and plaintext[i].islower():
             if ord(plaintext[i]) + (ord(keyword[i]) - num_A) > num_z:
                 ciphertext += chr(
-                    num_a
-                    - 1
-                    + ((ord(keyword[i]) - num_A) - (num_z - ord(plaintext[i])))
+                    num_a - 1 + ((ord(keyword[i]) - num_A) - (num_z - ord(plaintext[i])))
                 )
             else:
                 ciphertext += chr(ord(plaintext[i]) + (ord(keyword[i]) - num_A))
@@ -74,18 +72,14 @@ def decrypt_vigenere(ciphertext: str, keyword: str) -> str:
         if ciphertext[i].isalpha() and ciphertext[i].isupper():
             if ord(ciphertext[i]) - (ord(keyword[i]) - num_A) < num_A:
                 plaintext += chr(
-                    num_Z
-                    + 1
-                    - ((ord(keyword[i]) - num_A) - (ord(ciphertext[i]) - num_A))
+                    num_Z + 1 - ((ord(keyword[i]) - num_A) - (ord(ciphertext[i]) - num_A))
                 )
             else:
                 plaintext += chr(ord(ciphertext[i]) - (ord(keyword[i]) - num_A))
         elif ciphertext[i].isalpha() and ciphertext[i].islower():
             if ord(ciphertext[i]) - (ord(keyword[i]) - num_A) < num_a:
                 plaintext += chr(
-                    num_z
-                    + 1
-                    - ((ord(keyword[i]) - num_A) - (ord(ciphertext[i]) - num_a))
+                    num_z + 1 - ((ord(keyword[i]) - num_A) - (ord(ciphertext[i]) - num_a))
                 )
             else:
                 plaintext += chr((ord(ciphertext[i]) - (ord(keyword[i]) - num_A)))
