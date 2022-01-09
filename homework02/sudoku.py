@@ -89,14 +89,9 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     >>> get_block(grid, (8, 8))
     ['2', '8', '.', '.', '.', '5', '.', '7', '9']
     """
-    ind1 = pos[0]
-    ind2 = pos[1]
-    rowstart = int(3 * (ind1 // 3))
-    colstart = int(3 * (ind2 // 3))
-    res = []
-    for i in range(3):
-        res.append(grid[rowstart + i][colstart : colstart + 3])
-    return [a for b in res for a in b]
+    rows = pos[0] // 3 * 3
+    cols = pos[1] // 3 * 3
+    return [grid[row][column] for row in range(rows, rows + 3) for column in range(cols, cols + 3)]
 
 
 def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Tuple[int, int]:
@@ -112,12 +107,11 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Tuple[int, int]:
     ind1 = -1
     ind2 = -1
     for i in range(len(grid)):
-        for j in range(len(grid)):
-            if grid[i][j] == ".":
-                ind1 = i
-                ind2 = j
-                break
-    return (ind1, ind2)
+        ind2 = "".join(grid[i]).find(".")
+        if ind2 != -1:
+            ind1 = i
+            break
+    return ind1, ind2
 
 
 def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
@@ -131,17 +125,10 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    ans = set()
-    for i in range(1, 10):
-        flag = 0
-        if str(i) in get_row(grid, pos):
-            flag = 1
-        if str(i) in get_col(grid, pos):
-            flag = 1
-        if str(i) in get_block(grid, pos):
-            flag = 1
-        if flag == 0:
-            ans.add(str(i))
+    ans = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
+    elems = set()
+    elems.update(get_row(grid, pos), get_col(grid, pos), get_block(grid, pos))
+    ans = ans.difference(elems)
     return ans
 
 
@@ -228,16 +215,18 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     grid = solve(grid)
     i = 0
     j = 0
+    maxrow = len(grid) + 1
+    maxcol = len(grid[0]) + 1
     while sum(1 for row in grid for e in row if e == ".") != 81 - N:
         grid[i][j] = "."
         j += 2
-        if j == 10:
+        if j == maxcol:
             i += 1
             j = 0
-        if j == 9:
+        if j == maxcol - 1:
             i += 1
             j = 1
-        if i == 9:
+        if i == maxrow - 1:
             i = 0
             j = 1
     return grid
