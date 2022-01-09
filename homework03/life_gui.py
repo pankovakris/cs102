@@ -5,7 +5,7 @@ from ui import UI
 
 
 class GUI(UI):
-    def __init__(self, life: GameOfLife, cell_size: int=30, speed: int=10) -> None:
+    def __init__(self, life: GameOfLife, cell_size: int = 30, speed: int = 10) -> None:
         super().__init__(life)
         self.cell_size = cell_size
         self.width = self.life.rows * self.cell_size
@@ -18,18 +18,40 @@ class GUI(UI):
 
     def draw_lines(self) -> None:
         for x in range(0, self.width, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (x, 0), (x, self.height))
+            pygame.draw.line(
+                self.screen, pygame.Color("black"), (x, 0), (x, self.height)
+            )
         for y in range(0, self.height, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (0, y), (self.width, y))
+            pygame.draw.line(
+                self.screen, pygame.Color("black"), (0, y), (self.width, y)
+            )
 
     def draw_grid(self) -> None:
         # Copy from previous assignment
         for i in range(self.cell_height):
             for j in range(self.cell_width):
                 if self.life.curr_generation[i][j] == 1:
-                    pygame.draw.rect(self.screen, pygame.Color('green'), (j*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size))
+                    pygame.draw.rect(
+                        self.screen,
+                        pygame.Color("green"),
+                        (
+                            j * self.cell_size,
+                            i * self.cell_size,
+                            self.cell_size,
+                            self.cell_size,
+                        ),
+                    )
                 else:
-                    pygame.draw.rect(self.screen, pygame.Color('white'), (j*self.cell_size, i*self.cell_size, self.cell_size, self.cell_size))
+                    pygame.draw.rect(
+                        self.screen,
+                        pygame.Color("white"),
+                        (
+                            j * self.cell_size,
+                            i * self.cell_size,
+                            self.cell_size,
+                            self.cell_size,
+                        ),
+                    )
 
     def run(self) -> None:
         pygame.init()
