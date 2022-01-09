@@ -125,7 +125,7 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    ans = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
+    ans = {"1", "2", "3", "4", "5", "6", "7", "8", "9"}
     elems = set()
     elems.update(get_row(grid, pos), get_col(grid, pos), get_block(grid, pos))
     ans = ans.difference(elems)
