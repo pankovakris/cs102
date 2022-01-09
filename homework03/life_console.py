@@ -34,6 +34,7 @@ class Console(UI):
         curses.endwin()
 
 
-life = GameOfLife((24, 80), max_generations=50)
-ui = Console(life)
-ui.run()
+if __name__ == '__main__':
+	life = GameOfLife((24, 80), max_generations=50)
+	con = Console(life)
+	con.run()
