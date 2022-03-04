@@ -5,7 +5,6 @@ import community as community_louvain
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
-
 from vkapi.friends import get_friends, get_mutual
 
 
@@ -23,7 +22,7 @@ def ego_network(
         friends = get_friends(user_id).items
     for i in friends:
         try:
-            for id in get_mutual(source_uid=user_id, target_uid=i)[0]['common_friends']:
+            for id in get_mutual(source_uid=user_id, target_uid=i)[0]["common_friends"]:
                 grath.append((i, id))
         except:
             pass
@@ -72,6 +71,8 @@ def describe_communities(
         for uid in cluster_users:
             for friend in friends:
                 if uid == friend["id"]:
-                    data.append([cluster_n] + [friend.get(field) for field in fields])  # type: ignore
+                    data.append(
+                        [cluster_n] + [friend.get(field) for field in fields]
+                    )  # type: ignore
                     break
     return pd.DataFrame(data=data, columns=["cluster"] + fields)
