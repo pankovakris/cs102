@@ -16,7 +16,10 @@ class FriendsResponse:
 
 
 def get_friends(
-    user_id: int, count: int = 5000, offset: int = 0, fields: tp.Optional[tp.List[str]] = None
+    user_id: int,
+    count: int = 5000,
+    offset: int = 0,
+    fields: tp.Optional[tp.List[str]] = None,
 ) -> FriendsResponse:
     """
     Получить список идентификаторов друзей пользователя или ра
@@ -28,12 +31,17 @@ def get_friends(
     :param fields: Список полей, которые нужно получить для каждого пользователя.
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
-    req = requests.get(config.VK_CONFIG["domain"] + "friends.get", params={"access_token": config.VK_CONFIG["token"],
-                                                                  "v": config.VK_CONFIG["version"],
-                                                                  "user_id": user_id,
-                                                                  "count": count,
-                                                                  "offset": offset,
-                                                                  "fields": fields})
+    req = requests.get(
+        config.VK_CONFIG["domain"] + "friends.get",
+        params={
+            "access_token": config.VK_CONFIG["token"],
+            "v": config.VK_CONFIG["version"],
+            "user_id": user_id,
+            "count": count,
+            "offset": offset,
+            "fields": fields,
+        },
+    )
     data = req.json()["response"]["items"]
     if fields is None:
         friend_counts = len(data)
@@ -71,25 +79,44 @@ def get_mutual(
     result = []
     if target_uids is not None:
         for i in target_uids:
-            req = requests.get(config.VK_CONFIG["domain"] + "friends.getMutual",
-                               params={"access_token": config.VK_CONFIG["token"],
-                                       "v": config.VK_CONFIG["version"],
-                                       "source_uid": source_uid,
-                                       "target_uid": i,
-                                       "order": order,
-                                       "count": count,
-                                       "offset": offset}).json()
+            req = requests.get(
+                config.VK_CONFIG["domain"] + "friends.getMutual",
+                params={
+                    "access_token": config.VK_CONFIG["token"],
+                    "v": config.VK_CONFIG["version"],
+                    "source_uid": source_uid,
+                    "target_uid": i,
+                    "order": order,
+                    "count": count,
+                    "offset": offset,
+                },
+            ).json()
             print(req)
-            result.append(MutualFriends(id=i, common_friends=req["response"], common_count=len(req["response"])))
+            result.append(
+                MutualFriends(
+                    id=i,
+                    common_friends=req["response"],
+                    common_count=len(req["response"]),
+                )
+            )
         return result
     else:
-        req = requests.get(config.VK_CONFIG["domain"] + "friends.getMutual",
-                           params={"access_token": config.VK_CONFIG["token"],
-                                   "v": config.VK_CONFIG["version"],
-                                   "source_uid": source_uid,
-                                   "target_uid": target_uid,
-                                   "order": order,
-                                   "count": count,
-                                   "offset": offset}).json()
-        return [MutualFriends(id=source_uid, common_friends=req["response"], common_count=len(req["response"]))]
-
+        req = requests.get(
+            config.VK_CONFIG["domain"] + "friends.getMutual",
+            params={
+                "access_token": config.VK_CONFIG["token"],
+                "v": config.VK_CONFIG["version"],
+                "source_uid": source_uid,
+                "target_uid": target_uid,
+                "order": order,
+                "count": count,
+                "offset": offset,
+            },
+        ).json()
+        return [
+            MutualFriends(
+                id=source_uid,
+                common_friends=req["response"],
+                common_count=len(req["response"]),
+            )
+        ]

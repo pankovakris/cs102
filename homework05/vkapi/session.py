@@ -43,4 +43,3 @@ class Session(requests.Session):
             return requests.post(url, data=json.dumps(param_dict))
         else:
             return requests.post(url, data=data)
-

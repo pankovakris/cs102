@@ -2,14 +2,10 @@ import textwrap
 import time
 import typing as tp
 from string import Template
-
 import pandas as pd
 from pandas import json_normalize
-
 from vkapi import config, session
 from vkapi.exceptions import APIError
-
-
 
 def get_posts_2500(
     owner_id: str = "",
@@ -25,16 +21,21 @@ def get_posts_2500(
         raise APIError
     res = {"count": 0, "items": []}
     while offset < count:
-        req = requests.get(config.VK_CONFIG["domain"] + "wall.get", params={"access_token": config.VK_CONFIG["token"],
-                                                                     "v": config.VK_CONFIG["version"],
-                                                                     "account_id": config.VK_CONFIG["client_id"],
-                                                                     "domain": domain,
-                                                                     "offset": offset,
-                                                                     "owner_id": owner_id,
-                                                                     "count": count,
-                                                                     "filter": filter,
-                                                                     "extended": extended,
-                                                                     "fields": fields})
+        req = requests.get(
+            config.VK_CONFIG["domain"] + "wall.get",
+            params={
+                "access_token": config.VK_CONFIG["token"],
+                "v": config.VK_CONFIG["version"],
+                "account_id": config.VK_CONFIG["client_id"],
+                "domain": domain,
+                "offset": offset,
+                "owner_id": owner_id,
+                "count": count,
+                "filter": filter,
+                "extended": extended,
+                "fields": fields,
+            },
+        )
         res["count"] += req.json()["response"]["count"]
         res["items"].extend(req.json()["response"]["items"])
         offset += 100
@@ -69,16 +70,21 @@ def get_wall_execute(
         raise APIError
     res = {"count": 0, "items": []}
     while offset < count:
-        req = requests.get(config.VK_CONFIG["domain"] + "wall.get", params={"access_token": config.VK_CONFIG["token"],
-                                                                  "v": config.VK_CONFIG["version"],
-                                                                  "account_id": config.VK_CONFIG["client_id"],
-                                                                  "domain": domain,
-                                                                  "offset": offset,
-                                                                  "owner_id": owner_id,
-                                                                  "count": count,
-                                                                  "filter": filter,
-                                                                  "extended": extended,
-                                                                  "fields": fields})
+        req = requests.get(
+            config.VK_CONFIG["domain"] + "wall.get",
+            params={
+                "access_token": config.VK_CONFIG["token"],
+                "v": config.VK_CONFIG["version"],
+                "account_id": config.VK_CONFIG["client_id"],
+                "domain": domain,
+                "offset": offset,
+                "owner_id": owner_id,
+                "count": count,
+                "filter": filter,
+                "extended": extended,
+                "fields": fields,
+            },
+        )
         res["count"] += req.json()["response"]["count"]
         res["items"].extend(req.json()["response"]["items"])
         offset += 100
