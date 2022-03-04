@@ -39,7 +39,5 @@ class Session(requests.Session):
     def post(self, url, data=None, json=None, **kwargs: tp.Any) -> requests.Response:
         if url is None:
             url = self.base_url
-        if json is not None:
-            return requests.post(url, data=json.dumps(param_dict))
         else:
             return requests.post(url, data=data)
