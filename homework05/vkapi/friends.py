@@ -3,6 +3,8 @@ import math
 import time
 import typing as tp
 
+import requests
+
 from vkapi import config, session
 from vkapi.exceptions import APIError
 
