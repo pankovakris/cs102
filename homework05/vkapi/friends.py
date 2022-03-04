@@ -19,16 +19,28 @@ def get_friends(
     user_id: int, count: int = 5000, offset: int = 0, fields: tp.Optional[tp.List[str]] = None
 ) -> FriendsResponse:
     """
-    Получить список идентификаторов друзей пользователя или расширенную информацию
+    Получить список идентификаторов друзей пользователя или ра
+    сширенную информацию
     о друзьях пользователя (при использовании параметра fields).
-
     :param user_id: Идентификатор пользователя, список друзей для которого нужно получить.
     :param count: Количество друзей, которое нужно вернуть.
     :param offset: Смещение, необходимое для выборки определенного подмножества друзей.
     :param fields: Список полей, которые нужно получить для каждого пользователя.
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
-    pass
+    req = requests.get(config.VK_CONFIG["domain"] + "friends.get", params={"access_token": config.VK_CONFIG["token"],
+                                                                  "v": config.VK_CONFIG["version"],
+                                                                  "user_id": user_id,
+                                                                  "count": count,
+                                                                  "offset": offset,
+                                                                  "fields": fields})
+    data = req.json()["response"]["items"]
+    if fields is None:
+        friend_counts = len(data)
+    else:
+        friend_counts = len(data[0])
+
+    return FriendsResponse(friend_counts, data)
 
 
 class MutualFriends(tp.TypedDict):
@@ -48,7 +60,6 @@ def get_mutual(
 ) -> tp.Union[tp.List[int], tp.List[MutualFriends]]:
     """
     Получить список идентификаторов общих друзей между парой пользователей.
-
     :param source_uid: Идентификатор пользователя, чьи друзья пересекаются с друзьями пользователя с идентификатором target_uid.
     :param target_uid: Идентификатор пользователя, с которым необходимо искать общих друзей.
     :param target_uids: Cписок идентификаторов пользователей, с которыми необходимо искать общих друзей.
@@ -57,4 +68,28 @@ def get_mutual(
     :param offset: Смещение, необходимое для выборки определенного подмножества общих друзей.
     :param progress: Callback для отображения прогресса.
     """
-    pass
+    result = []
+    if target_uids is not None:
+        for i in target_uids:
+            req = requests.get(config.VK_CONFIG["domain"] + "friends.getMutual",
+                               params={"access_token": config.VK_CONFIG["token"],
+                                       "v": config.VK_CONFIG["version"],
+                                       "source_uid": source_uid,
+                                       "target_uid": i,
+                                       "order": order,
+                                       "count": count,
+                                       "offset": offset}).json()
+            print(req)
+            result.append(MutualFriends(id=i, common_friends=req["response"], common_count=len(req["response"])))
+        return result
+    else:
+        req = requests.get(config.VK_CONFIG["domain"] + "friends.getMutual",
+                           params={"access_token": config.VK_CONFIG["token"],
+                                   "v": config.VK_CONFIG["version"],
+                                   "source_uid": source_uid,
+                                   "target_uid": target_uid,
+                                   "order": order,
+                                   "count": count,
+                                   "offset": offset}).json()
+        return [MutualFriends(id=source_uid, common_friends=req["response"], common_count=len(req["response"]))]
+

@@ -10,6 +10,7 @@ from vkapi import config, session
 from vkapi.exceptions import APIError
 
 
+
 def get_posts_2500(
     owner_id: str = "",
     domain: str = "",
@@ -20,7 +21,24 @@ def get_posts_2500(
     extended: int = 0,
     fields: tp.Optional[tp.List[str]] = None,
 ) -> tp.Dict[str, tp.Any]:
-    pass
+    if count > max_count:
+        raise APIError
+    res = {"count": 0, "items": []}
+    while offset < count:
+        req = requests.get(config.VK_CONFIG["domain"] + "wall.get", params={"access_token": config.VK_CONFIG["token"],
+                                                                     "v": config.VK_CONFIG["version"],
+                                                                     "account_id": config.VK_CONFIG["client_id"],
+                                                                     "domain": domain,
+                                                                     "offset": offset,
+                                                                     "owner_id": owner_id,
+                                                                     "count": count,
+                                                                     "filter": filter,
+                                                                     "extended": extended,
+                                                                     "fields": fields})
+        res["count"] += req.json()["response"]["count"]
+        res["items"].extend(req.json()["response"]["items"])
+        offset += 100
+    return res
 
 
 def get_wall_execute(
@@ -36,9 +54,7 @@ def get_wall_execute(
 ) -> pd.DataFrame:
     """
     Возвращает список записей со стены пользователя или сообщества.
-
     @see: https://vk.com/dev/wall.get
-
     :param owner_id: Идентификатор пользователя или сообщества, со стены которого необходимо получить записи.
     :param domain: Короткий адрес пользователя или сообщества.
     :param offset: Смещение, необходимое для выборки определенного подмножества записей.
@@ -49,4 +65,21 @@ def get_wall_execute(
     :param fields: Список дополнительных полей для профилей и сообществ, которые необходимо вернуть.
     :param progress: Callback для отображения прогресса.
     """
-    pass
+    if count > max_count:
+        raise APIError
+    res = {"count": 0, "items": []}
+    while offset < count:
+        req = requests.get(config.VK_CONFIG["domain"] + "wall.get", params={"access_token": config.VK_CONFIG["token"],
+                                                                  "v": config.VK_CONFIG["version"],
+                                                                  "account_id": config.VK_CONFIG["client_id"],
+                                                                  "domain": domain,
+                                                                  "offset": offset,
+                                                                  "owner_id": owner_id,
+                                                                  "count": count,
+                                                                  "filter": filter,
+                                                                  "extended": extended,
+                                                                  "fields": fields})
+        res["count"] += req.json()["response"]["count"]
+        res["items"].extend(req.json()["response"]["items"])
+        offset += 100
+    return json_normalize(res)

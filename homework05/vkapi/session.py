@@ -5,7 +5,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 
-class Session:
+class Session(requests.Session):
     """
     Сессия.
 
@@ -22,10 +22,25 @@ class Session:
         max_retries: int = 3,
         backoff_factor: float = 0.3,
     ) -> None:
-        pass
+        self.timeout = timeout
+        self.max_retries = max_retries
+        self.backoff_factor = backoff_factor
+        self.base_url = base_url
+        self.retries = Retry(total=max_retries, backoff_factor=0.3)
+        self.adapter = HTTPAdapter(max_retries=self.retries)
+        self.mount("https://", self.adapter)
+        self.mount("http://", self.adapter)
 
-    def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
-        pass
+    def get(self, url, **kwargs: tp.Any) -> requests.Response:
+        if url is None:
+            url = self.base_url
+        return requests.get(str(url))
 
-    def post(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
-        pass
+    def post(self, url, data=None, json=None, **kwargs: tp.Any) -> requests.Response:
+        if url is None:
+            url = self.base_url
+        if json is not None:
+            return requests.post(url, data=json.dumps(param_dict))
+        else:
+            return requests.post(url, data=data)
+
