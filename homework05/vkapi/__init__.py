@@ -1,3 +1,4 @@
+# type: ignore
 from vkapi import config
 from vkapi.session import Session
 

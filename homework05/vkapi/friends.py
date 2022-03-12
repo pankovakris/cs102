@@ -53,7 +53,7 @@ def get_friends(
 
 
 class MutualFriends(tp.TypedDict):
-    id: Optional[int]
+    id: tp.Optional[int]
     common_friends: tp.List[int]
     common_count: int
 
