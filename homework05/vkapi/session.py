@@ -1,3 +1,4 @@
+# type: ignore
 import typing as tp
 
 import requests
@@ -21,7 +22,6 @@ class Session(requests.Session):
         timeout: float = 5.0,
         max_retries: int = 3,
         backoff_factor: float = 0.3,
-        type: ignore
     ) -> None:
         self.timeout = timeout
         self.max_retries = max_retries
