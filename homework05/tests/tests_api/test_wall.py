@@ -1,3 +1,4 @@
+# type: ignore
 import time
 import unittest
 from unittest.mock import patch

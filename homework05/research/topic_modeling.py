@@ -1,3 +1,4 @@
+# type: ignore
 import gensim
 import pyLDAvis.gensim
 from gensim.corpora import Dictionary
