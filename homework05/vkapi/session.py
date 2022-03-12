@@ -21,6 +21,7 @@ class Session(requests.Session):
         timeout: float = 5.0,
         max_retries: int = 3,
         backoff_factor: float = 0.3,
+        type: ignore
     ) -> None:
         self.timeout = timeout
         self.max_retries = max_retries
@@ -39,5 +40,4 @@ class Session(requests.Session):
     def post(self, url, data=None, json=None, **kwargs: tp.Any) -> requests.Response:
         if url is None:
             url = self.base_url
-        else:
-            return requests.post(url, data=data)
+        return requests.post(url, data=data)
