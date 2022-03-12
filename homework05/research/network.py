@@ -1,3 +1,4 @@
+# type: ignore
 import typing as tp
 from collections import defaultdict
 
