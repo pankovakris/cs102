@@ -1,3 +1,4 @@
+# type: ignore
 import textwrap
 import time
 import typing as tp
@@ -26,7 +27,7 @@ def get_posts_2500(
     while offset < count:
         req = requests.get(
             config.VK_CONFIG["domain"] + "wall.get",
-            params: Dict[str, Union[int, str]] = {
+            params = {
                 "access_token": config.VK_CONFIG["token"],
                 "v": config.VK_CONFIG["version"],
                 "account_id": config.VK_CONFIG["client_id"],
@@ -75,7 +76,7 @@ def get_wall_execute(
     while offset < count:
         req = requests.get(
             config.VK_CONFIG["domain"] + "wall.get",
-            params: Dict[str, Union[int, str] = {
+            params = {
                 "access_token": config.VK_CONFIG["token"],
                 "v": config.VK_CONFIG["version"],
                 "account_id": config.VK_CONFIG["client_id"],
