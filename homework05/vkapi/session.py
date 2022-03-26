@@ -39,4 +39,3 @@ class Session:
         if "timeout" in kwargs:
             self.timeout = kwargs["timeout"]
         return self.session.post(self.base_url + "/" + url, timeout=self.timeout, *args, **kwargs)
-
