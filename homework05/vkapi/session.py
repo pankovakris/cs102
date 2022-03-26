@@ -32,15 +32,11 @@ class Session:
 
         if "timeout" in kwargs:
             self.timeout = kwargs["timeout"]
-        return self.session.get(
-            self.base_url + "/" + url, timeout=self.timeout, *args, **kwargs
-        )
+        return self.session.get(self.base_url + "/" + url, timeout=self.timeout, *args, **kwargs)
 
     def post(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:
 
         if "timeout" in kwargs:
             self.timeout = kwargs["timeout"]
-        return self.session.post(
-            self.base_url + "/" + url, timeout=self.timeout, *args, **kwargs
-        )
+        return self.session.post(self.base_url + "/" + url, timeout=self.timeout, *args, **kwargs)
 
