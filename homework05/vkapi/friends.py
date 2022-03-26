@@ -33,28 +33,18 @@ def get_friends(
     :param fields: Список полей, которые нужно получить для каждого пользователя.
     :return: Список идентификаторов друзей пользователя или список пользователей.
     """
-    req = requests.get(
-        config.VK_CONFIG["domain"] + "friends.get",
-        params={
-            "access_token": config.VK_CONFIG["token"],
-            "v": config.VK_CONFIG["version"],
-            "user_id": user_id,
-            "count": count,
-            "offset": offset,
-            "fields": fields,
-        },
-    )
-    data = req.json()["response"]["items"]
-    if fields is None:
-        friend_counts = len(data)
-    else:
-        friend_counts = len(data[0])
-
+    fields = ", ".join(fields) if fields else ""
+    query = f"friends.get?access_token={VK_CONFIG['token']}&user_id={user_id}&fields={fields}&count={count}&v={VK_CONFIG['version']}"
+    domain = VK_CONFIG["domain"]
+    sess = session.Session(f"{domain}")
+    result = sess.get(query)
+    friend_counts = result.json()["response"]["count"]
+    data = result.json()["response"]["items"]
     return FriendsResponse(friend_counts, data)
 
 
 class MutualFriends(tp.TypedDict):
-    id: tp.Optional[int]
+    id: int
     common_friends: tp.List[int]
     common_count: int
 
@@ -78,21 +68,12 @@ def get_mutual(
     :param offset: Смещение, необходимое для выборки определенного подмножества общих друзей.
     :param progress: Callback для отображения прогресса.
     """
+    sess = session.Session(VK_CONFIG["domain"])
     result = []
     if target_uids is not None:
         for i in target_uids:
-            req = requests.get(
-                config.VK_CONFIG["domain"] + "friends.getMutual",
-                params={
-                    "access_token": config.VK_CONFIG["token"],
-                    "v": config.VK_CONFIG["version"],
-                    "source_uid": source_uid,
-                    "target_uid": i,
-                    "order": order,
-                    "count": count,
-                    "offset": offset,
-                },
-            ).json()
+            query = f"/friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&order={order}&target_uid={i}&v={VK_CONFIG['version']}"
+            req = sess.get(query).json()
             print(req)
             result.append(
                 MutualFriends(
@@ -103,21 +84,11 @@ def get_mutual(
             )
         return result
     else:
-        req = requests.get(
-            config.VK_CONFIG["domain"] + "friends.getMutual",
-            params={
-                "access_token": config.VK_CONFIG["token"],
-                "v": config.VK_CONFIG["version"],
-                "source_uid": source_uid,
-                "target_uid": target_uid,
-                "order": order,
-                "count": count,
-                "offset": offset,
-            },
-        ).json()
+        url = f"/friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&order={order}&target_uid={target_uid}&v={VK_CONFIG['version']}"
+        req = sess.get(url).json()
         return [
             MutualFriends(
-                id=source_uid,
+                id=target_uid,
                 common_friends=req["response"],
                 common_count=len(req["response"]),
             )

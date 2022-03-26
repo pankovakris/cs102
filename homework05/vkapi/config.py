@@ -3,6 +3,6 @@
 VK_CONFIG = {
     "domain": "https://api.vk.com/method",
     "client_id": "8080922",
-    "token": "eeb11dd9ce6b5ac695b75e2038ba8d4d60912f1f17edb09ab5498e9e0d137720e5a9604e0c3adce6fc3e4",
+    "token": "ce7eb66600ebc9cae52266dbbde7d9cd33af9c1f3b744bda07869d80f698f1e81cd3a2805d456c7d9235c",
     "version": "5.126",
 }
