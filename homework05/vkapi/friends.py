@@ -5,8 +5,8 @@ import time
 import typing as tp
 
 import requests
-from vkapi import config, session
 from vkapi.config import VK_CONFIG
+from vkapi.session import Session
 from vkapi.exceptions import APIError
 
 QueryParams = tp.Optional[tp.Dict[str, tp.Union[str, int]]]
@@ -37,7 +37,7 @@ def get_friends(
     fields = ", ".join(fields) if fields else ""
     query = f"friends.get?access_token={VK_CONFIG['token']}&user_id={user_id}&fields={fields}&count={count}&v={VK_CONFIG['version']}"
     domain = VK_CONFIG["domain"]
-    sess = session.Session(f"{domain}")
+    sess = Session(f"{domain}")
     result = sess.get(query)
     friend_counts = result.json()["response"]["count"]
     data = result.json()["response"]["items"]
@@ -69,7 +69,7 @@ def get_mutual(
     :param offset: Смещение, необходимое для выборки определенного подмножества общих друзей.
     :param progress: Callback для отображения прогресса.
     """
-    sess = session.Session(VK_CONFIG["domain"])
+    sess = Session(VK_CONFIG["domain"])
     result = []
     if target_uids is not None:
         for i in target_uids:
