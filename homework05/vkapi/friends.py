@@ -69,23 +69,28 @@ def get_mutual(
     :param offset: Смещение, необходимое для выборки определенного подмножества общих друзей.
     :param progress: Callback для отображения прогресса.
     """
-    sess = Session(VK_CONFIG["domain"])
+    sess = session.Session(VK_CONFIG["domain"])
     result = []
     if target_uids is not None:
-        for i in target_uids:
-            query = f"friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&target_uid={i}&order={order}&count={count}&offset={offset}&v={VK_CONFIG['version']}"
-            req = sess.get(query).json()
-            print(req)
-            result.append(
-                MutualFriends(
-                    id=i,
-                    common_friends=req["response"],
-                    common_count=len(req["response"]),
+        for i in range(0, len(target_uids), 100):
+            query = f"friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&target_uids={','.join(list(map(str, target_uids)))}&count={count}&offset={i}&v={VK_CONFIG['version']}"
+            friends = sess.get(query).json()
+            for friend in friends["response"]:
+                result.append(
+                    MutualFriends(
+                        id=friend["id"],
+                        common_friends=list(map(int, friend["common_friends"])),
+                        common_count=friend["common_count"],
+                    )
                 )
-            )
-            time.sleep(0.34)
         return result
     else:
-        url = f"friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&target_uid={target_uid}&order={order}&count={count}&offset={offset}&v={VK_CONFIG['version']}"
-        req = sess.get(url).json()
-        return req["response"]
+        query = f"friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&target_uid={target_uid}&order={order}&count={count}&offset={offset}&v={VK_CONFIG['version']}"
+        req = sess.get(query).json()
+        return [
+            MutualFriends(
+                id=target_uid,
+                common_friends=req["response"],
+                common_count=len(req["response"]),
+            )
+        ]
