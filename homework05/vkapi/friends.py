@@ -87,10 +87,4 @@ def get_mutual(
     else:
         query = f"friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&target_uid={target_uid}&order={order}&count={count}&offset={offset}&v={VK_CONFIG['version']}"
         req = sess.get(query).json()
-        return [
-            MutualFriends(
-                id=target_uid,
-                common_friends=req["response"],
-                common_count=len(req["response"]),
-            )
-        ]
+        return req["response"]
