@@ -69,7 +69,7 @@ def get_mutual(
     :param offset: Смещение, необходимое для выборки определенного подмножества общих друзей.
     :param progress: Callback для отображения прогресса.
     """
-    sess = session.Session(VK_CONFIG["domain"])
+    sess = Session(VK_CONFIG["domain"])
     result = []
     if target_uids is not None:
         for i in range(0, len(target_uids), 100):
