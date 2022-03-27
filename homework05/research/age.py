@@ -25,5 +25,7 @@ def age_predict(user_id: int) -> tp.Optional[float]:
                 agelist.append(2022 - int(date[2]))
         except:
             pass
+    if len(agelist) == 0:
+        return 0
 
     return statistics.median(agelist)

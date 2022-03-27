@@ -73,7 +73,7 @@ def get_mutual(
     result = []
     if target_uids is not None:
         for i in target_uids:
-            query = f"/friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&target_uid={i}&order={order}&count={count}&offset={offset}&v={VK_CONFIG['version']}"
+            query = f"friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&target_uid={i}&order={order}&count={count}&offset={offset}&v={VK_CONFIG['version']}"
             req = sess.get(query).json()
             print(req)
             result.append(
@@ -85,7 +85,7 @@ def get_mutual(
             )
         return result
     else:
-        url = f"/friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&target_uid={target_uid}&order={order}&count={count}&offset={offset}&v={VK_CONFIG['version']}"
+        url = f"friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&target_uid={target_uid}&order={order}&count={count}&offset={offset}&v={VK_CONFIG['version']}"
         req = sess.get(url).json()
         return [
             MutualFriends(
