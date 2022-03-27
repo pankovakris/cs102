@@ -21,27 +21,7 @@ def get_posts_2500(
     extended: int = 0,
     fields: tp.Optional[tp.List[str]] = None,
 ) -> tp.Dict[str, tp.Any]:
-    res = {"count": 0, "items": []}
-    while offset < count:
-        req = requests.get(
-            config.VK_CONFIG["domain"] + "wall.get",
-            params={
-                "access_token": config.VK_CONFIG["token"],
-                "v": config.VK_CONFIG["version"],
-                "account_id": config.VK_CONFIG["client_id"],
-                "domain": domain,
-                "offset": offset,
-                "owner_id": owner_id,
-                "count": count,
-                "filter": filter,
-                "extended": extended,
-                "fields": fields,
-            },
-        )
-        res["count"] += req.json()["response"]["count"]
-        res["items"].extend(req.json()["response"]["items"])
-        offset += 100
-    return res
+    pass
 
 
 def get_wall_execute(
@@ -68,24 +48,24 @@ def get_wall_execute(
     :param fields: Список дополнительных полей для профилей и сообществ, которые необходимо вернуть.
     :param progress: Callback для отображения прогресса.
     """
-    res = {"count": 0, "items": []}
-    while offset < count:
-        req = requests.get(
-            config.VK_CONFIG["domain"] + "wall.get",
-            params={
-                "access_token": config.VK_CONFIG["token"],
-                "v": config.VK_CONFIG["version"],
-                "account_id": config.VK_CONFIG["client_id"],
-                "domain": domain,
-                "offset": offset,
-                "owner_id": owner_id,
-                "count": count,
-                "filter": filter,
-                "extended": extended,
-                "fields": fields,
-            },
-        )
-        res["count"] += req.json()["response"]["count"]
-        res["items"].extend(req.json()["response"]["items"])
-        offset += 100
-    return json_normalize(res)
+
+    mas = []
+    sess = Session(config["domain"])
+    for i in range(0, count, 200):
+        code1 = f"""
+                    return API.wall.get ({{
+                    "owner_id": "{owner_id}",
+                    "domain": "{domain}",
+                    "offset": {i},
+                    "count": "200",
+                    "filter": "{filter}",
+                    "extended": "0",
+                    "fields": ""
+        }});
+        """
+        data = {"code": code1, "access_token": config["token"], "v": config["version"]}
+        response = sess.post("execute", data=data).json()
+        for i in response["response"]["items"]:
+            mas.append(i)
+        time.sleep(0.33)
+    return json_normalize(mas)
