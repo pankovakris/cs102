@@ -7,7 +7,7 @@ from string import Template
 import pandas as pd
 import requests
 from pandas import json_normalize
-from vkapi import config
+from vkapi import config, session
 from vkapi.exceptions import APIError
 
 
@@ -50,7 +50,7 @@ def get_wall_execute(
     """
 
     mas = []
-    sess = Session(config["domain"])
+    sess = session.Session(config.VK_CONFIG["domain"])
     for i in range(0, count, 200):
         code1 = f"""
                     return API.wall.get ({{
@@ -63,7 +63,7 @@ def get_wall_execute(
                     "fields": ""
         }});
         """
-        data = {"code": code1, "access_token": config["token"], "v": config["version"]}
+        data = {"code": code1, "access_token": config.VK_CONFIG["token"], "v": config.VK_CONFIG["version"]}
         response = sess.post("execute", data=data).json()
         for i in response["response"]["items"]:
             mas.append(i)
