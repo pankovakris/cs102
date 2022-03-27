@@ -8,6 +8,7 @@ import pandas as pd
 import requests
 from pandas import json_normalize
 from vkapi import config, session
+from vkapi.session import Session
 from vkapi.exceptions import APIError
 
 
@@ -50,7 +51,7 @@ def get_wall_execute(
     """
 
     mas = []
-    sess = session.Session(config.VK_CONFIG["domain"])
+    sess = Session(config.VK_CONFIG["domain"])
     for i in range(0, count, 200):
         code1 = f"""
                     return API.wall.get ({{
