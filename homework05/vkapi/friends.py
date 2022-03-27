@@ -36,12 +36,9 @@ def get_friends(
     """
     fields = ", ".join(fields) if fields else ""
     query = f"friends.get?access_token={VK_CONFIG['token']}&user_id={user_id}&fields={fields}&count={count}&v={VK_CONFIG['version']}"
-    domain = VK_CONFIG["domain"]
-    sess = Session(f"{domain}")
-    result = sess.get(query)
-    friend_counts = result.json()["response"]["count"]
-    data = result.json()["response"]["items"]
-    return FriendsResponse(friend_counts, data)
+    sess = Session(VK_CONFIG["domain"])
+    result = sess.get(query).json()
+    return FriendsResponse(result["response"]["count"], result["response"]["items"])
 
 
 class MutualFriends(tp.TypedDict):
