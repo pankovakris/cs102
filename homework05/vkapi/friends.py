@@ -83,6 +83,7 @@ def get_mutual(
                     common_count=len(req["response"]),
                 )
             )
+            time.sleep(0.34)
         return result
     else:
         url = f"friends.getMutual?access_token={VK_CONFIG['token']}&source_uid={source_uid}&target_uid={target_uid}&order={order}&count={count}&offset={offset}&v={VK_CONFIG['version']}"
