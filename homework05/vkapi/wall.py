@@ -64,9 +64,9 @@ def get_wall_execute(
         }});
         """
         data = {
-        	"code": code1,
-        	"access_token": config.VK_CONFIG["token"],
-        	"v": config.VK_CONFIG["version"]
+            "code": code1,
+            "access_token": config.VK_CONFIG["token"],
+            "v": config.VK_CONFIG["version"],
         }
         response = sess.post("execute", data=data).json()
         for i in response["response"]["items"]:
