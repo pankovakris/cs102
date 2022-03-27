@@ -21,8 +21,31 @@ def get_posts_2500(
     filter: str = "owner",
     extended: int = 0,
     fields: tp.Optional[tp.List[str]] = None,
-) -> tp.Dict[str, tp.Any]:
-    pass
+):
+    mas = []
+    sess = Session(config.VK_CONFIG["domain"])
+    for i in range(0, count, 200):
+        code1 = f"""
+                     return API.wall.get ({{
+                     "owner_id": "{owner_id}",
+                     "domain": "{domain}",
+                     "offset": {i},
+                     "count": "200",
+                     "filter": "{filter}",
+                     "extended": "0",
+                     "fields": ""
+         }});
+         """
+        data = {
+            "code": code1,
+            "access_token": config.VK_CONFIG["token"],
+            "v": config.VK_CONFIG["version"],
+        }
+        response = sess.post("execute", data=data).json()
+        for i in response["response"]["items"]:
+            mas.append(i)
+        time.sleep(0.33)
+    return json_normalize(mas)
 
 
 def get_wall_execute(
@@ -35,7 +58,7 @@ def get_wall_execute(
     extended: int = 0,
     fields: tp.Optional[tp.List[str]] = None,
     progress=None,
-) -> pd.DataFrame:
+):
     """
     Возвращает список записей со стены пользователя или сообщества.
     @see: https://vk.com/dev/wall.get
@@ -49,28 +72,23 @@ def get_wall_execute(
     :param fields: Список дополнительных полей для профилей и сообществ, которые необходимо вернуть.
     :param progress: Callback для отображения прогресса.
     """
-
     mas = []
     sess = Session(config.VK_CONFIG["domain"])
-    for i in range(0, count, 200):
-        code1 = f"""
-                    return API.wall.get ({{
-                    "owner_id": "{owner_id}",
-                    "domain": "{domain}",
-                    "offset": {i},
-                    "count": "200",
-                    "filter": "{filter}",
-                    "extended": "0",
-                    "fields": ""
-        }});
-        """
-        data = {
-            "code": code1,
-            "access_token": config.VK_CONFIG["token"],
-            "v": config.VK_CONFIG["version"],
-        }
-        response = sess.post("execute", data=data).json()
-        for i in response["response"]["items"]:
-            mas.append(i)
-        time.sleep(0.33)
-    return json_normalize(mas)
+    code1 = f"""
+                return API.wall.get ({{
+                "owner_id": "{owner_id}",
+                "domain": "{domain}",
+                "offset": {i},
+                "count": "200",
+                "filter": "{filter}",
+                "extended": "0",
+                "fields": ""
+    }});
+    """
+    data = {
+        "code": code1,
+        "access_token": config.VK_CONFIG["token"],
+        "v": config.VK_CONFIG["version"],
+    }
+    response = sess.post("execute", data=data).json()
+    return get_posts_2500(owner_id=owner_id, domain=domain, count=count, filter=filter)
