@@ -21,8 +21,6 @@ def get_posts_2500(
     extended: int = 0,
     fields: tp.Optional[tp.List[str]] = None,
 ) -> tp.Dict[str, tp.Any]:
-    if count > max_count:
-        raise APIError
     res = {"count": 0, "items": []}
     while offset < count:
         req = requests.get(
@@ -70,8 +68,6 @@ def get_wall_execute(
     :param fields: Список дополнительных полей для профилей и сообществ, которые необходимо вернуть.
     :param progress: Callback для отображения прогресса.
     """
-    if count > max_count:
-        raise APIError
     res = {"count": 0, "items": []}
     while offset < count:
         req = requests.get(
