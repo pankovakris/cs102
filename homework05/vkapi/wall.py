@@ -24,7 +24,7 @@ def get_posts_2500(
     res = {"count": 0, "items": []}
     while offset < count:
         req = requests.get(
-            "http://" + domain + "wall.get",
+            config.VK_CONFIG["domain"] + "wall.get",
             params={
                 "access_token": config.VK_CONFIG["token"],
                 "v": config.VK_CONFIG["version"],
@@ -71,7 +71,7 @@ def get_wall_execute(
     res = {"count": 0, "items": []}
     while offset < count:
         req = requests.get(
-            "http://" + domain + "wall.get",
+            config.VK_CONFIG["domain"] + "wall.get",
             params={
                 "access_token": config.VK_CONFIG["token"],
                 "v": config.VK_CONFIG["version"],
