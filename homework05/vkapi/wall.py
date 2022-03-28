@@ -44,7 +44,7 @@ def get_posts_2500(
         response = sess.post("execute", data=data).json()
         for i in response["response"]["items"]:
             mas.append(i)
-        time.sleep(0.34)
+        time.sleep(1)
     return json_normalize(mas)
 
 
