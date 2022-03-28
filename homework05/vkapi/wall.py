@@ -78,7 +78,7 @@ def get_wall_execute(
                 return API.wall.get ({{
                 "owner_id": "{owner_id}",
                 "domain": "{domain}",
-                "offset": {i},
+                "offset": {0},
                 "count": "200",
                 "filter": "{filter}",
                 "extended": "0",
