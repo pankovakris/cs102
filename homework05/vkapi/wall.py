@@ -24,13 +24,13 @@ def get_posts_2500(
 ):
     mas = []
     sess = Session(config.VK_CONFIG["domain"])
-    for i in range(0, count, 200):
+    for i in range(0, count, 100):
         code1 = f"""
                      return API.wall.get ({{
                      "owner_id": "{owner_id}",
                      "domain": "{domain}",
                      "offset": {i},
-                     "count": "200",
+                     "count": "100",
                      "filter": "{filter}",
                      "extended": "0",
                      "fields": ""
@@ -42,9 +42,9 @@ def get_posts_2500(
             "v": config.VK_CONFIG["version"],
         }
         response = sess.post("execute", data=data).json()
+        time.sleep(2)
         for i in response["response"]["items"]:
             mas.append(i)
-        time.sleep(2)
     return json_normalize(mas)
 
 
