@@ -42,7 +42,7 @@ def get_posts_2500(
             "v": config.VK_CONFIG["version"],
         }
         response = sess.post("execute", data=data).json()
-        time.sleep(2)
+        time.sleep(1)
         for i in response["response"]["items"]:
             mas.append(i)
     return json_normalize(mas)
