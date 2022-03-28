@@ -92,4 +92,5 @@ def get_wall_execute(
     }
     response = sess.post("execute", data=data).json()
     ret = get_posts_2500(owner_id=owner_id, domain=domain, count=count, filter=filter)
+    time.sleep(2)
     return ret
