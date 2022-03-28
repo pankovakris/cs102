@@ -44,7 +44,7 @@ def get_posts_2500(
         response = sess.post("execute", data=data).json()
         for i in response["response"]["items"]:
             mas.append(i)
-        time.sleep(0.33)
+        time.sleep(0.34)
     return json_normalize(mas)
 
 
@@ -91,4 +91,5 @@ def get_wall_execute(
         "v": config.VK_CONFIG["version"],
     }
     response = sess.post("execute", data=data).json()
-    return get_posts_2500(owner_id=owner_id, domain=domain, count=count, filter=filter)
+    ret = get_posts_2500(owner_id=owner_id, domain=domain, count=count, filter=filter)
+    return ret
