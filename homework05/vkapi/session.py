@@ -25,7 +25,16 @@ class Session:
         self.base_url = base_url
         self.timeout = timeout
         self.session = requests.Session()
-        adapter = HTTPAdapter(max_retries=max_retries)
+        errors = []
+        for i in range(400, 600):
+            errors.append(i)
+        retry = Retry(
+            method_whitelist=["POST", "GET"],
+            total=max_retries,
+            backoff_factor=backoff_factor,
+            status_forcelist=errors,
+        )
+        adapter = HTTPAdapter(max_retries=retry)
         self.session.mount("https://", adapter)
 
     def get(self, url: str, *args: tp.Any, **kwargs: tp.Any) -> requests.Response:

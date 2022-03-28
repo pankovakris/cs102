@@ -25,7 +25,7 @@ def get_posts_2500(
     mas = []
     sess = Session(config.VK_CONFIG["domain"])
     for i in range(0, count, 100):
-        code1 = f"""
+        code = f"""
                      return API.wall.get ({{
                      "owner_id": "{owner_id}",
                      "domain": "{domain}",
@@ -37,7 +37,7 @@ def get_posts_2500(
          }});
          """
         data = {
-            "code": code1,
+            "code": code,
             "access_token": config.VK_CONFIG["token"],
             "v": config.VK_CONFIG["version"],
         }
@@ -74,7 +74,7 @@ def get_wall_execute(
     """
     mas = []
     sess = Session(config.VK_CONFIG["domain"])
-    code1 = f"""
+    code = f"""
                 return API.wall.get ({{
                 "owner_id": "{owner_id}",
                 "domain": "{domain}",
@@ -86,7 +86,7 @@ def get_wall_execute(
     }});
     """
     data = {
-        "code": code1,
+        "code": code,
         "access_token": config.VK_CONFIG["token"],
         "v": config.VK_CONFIG["version"],
     }
