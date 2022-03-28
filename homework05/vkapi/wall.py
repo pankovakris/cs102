@@ -44,7 +44,7 @@ def get_posts_2500(
         response = sess.post("execute", data=data).json()
         for i in response["response"]["items"]:
             mas.append(i)
-        time.sleep(1)
+        time.sleep(2)
     return json_normalize(mas)
 
 
@@ -79,7 +79,7 @@ def get_wall_execute(
                 "owner_id": "{owner_id}",
                 "domain": "{domain}",
                 "offset": {0},
-                "count": "200",
+                "count": "1",
                 "filter": "{filter}",
                 "extended": "0",
                 "fields": ""
