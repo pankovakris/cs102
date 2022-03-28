@@ -1,3 +1,4 @@
+# type: ignore
 import typing as tp
 from collections import defaultdict
 
@@ -5,7 +6,6 @@ import community as community_louvain
 import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
-
 from vkapi.friends import get_friends, get_mutual
 
 
@@ -18,7 +18,16 @@ def ego_network(
     :param user_id: Идентификатор пользователя, для которого строится граф друзей.
     :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
     """
-    pass
+
+    if friends is None:
+        friends = get_friends(user_id).items
+    grath = []
+    mutuals = get_mutual(user_id, target_uids=friends)
+    for mutual in mutuals:
+        mutual_id = mutual["id"]
+        for person in mutual["common_friends"]:
+            grath.append((mutual_id, person))
+    return grath
 
 
 def plot_ego_network(net: tp.List[tp.Tuple[int, int]]) -> None:
@@ -63,6 +72,8 @@ def describe_communities(
         for uid in cluster_users:
             for friend in friends:
                 if uid == friend["id"]:
-                    data.append([cluster_n] + [friend.get(field) for field in fields])  # type: ignore
+                    data.append(
+                        [cluster_n] + [friend.get(field) for field in fields]
+                    )  # type: ignore
                     break
     return pd.DataFrame(data=data, columns=["cluster"] + fields)
