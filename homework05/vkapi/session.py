@@ -25,9 +25,6 @@ class Session:
         self.base_url = base_url
         self.timeout = timeout
         self.session = requests.Session()
-        errors = []
-        for i in range(400, 600):
-            errors.append(i)
         retry = Retry(
             method_whitelist=["POST", "GET"],
             total=max_retries,
