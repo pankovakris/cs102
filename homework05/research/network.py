@@ -18,14 +18,14 @@ def ego_network(
     :param user_id: Идентификатор пользователя, для которого строится граф друзей.
     :param friends: Идентификаторы друзей, между которыми устанавливаются связи.
     """
-    
+
     if friends is None:
         friends = get_friends(user_id).items
     grath = []
     mutuals = get_mutual(user_id, target_uids=friends)
     for mutual in mutuals:
-    	mutual_id = mutual["id"]
-    	for person in mutual["common_friends"]:
+        mutual_id = mutual["id"]
+        for person in mutual["common_friends"]:
             grath.append((mutual_id, person))
     return grath
 
