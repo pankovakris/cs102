@@ -29,7 +29,7 @@ class Session:
             method_whitelist=["POST", "GET"],
             total=max_retries,
             backoff_factor=backoff_factor,
-            status_forcelist=errors,
+            status_forcelist=list(range(200)),
         )
         adapter = HTTPAdapter(max_retries=retry)
         self.session.mount("https://", adapter)
