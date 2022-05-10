@@ -15,13 +15,11 @@ class NaiveBayesClassifier:
         self.feat_freq = defaultdict(lambda: 0)
 
     def fit(self, X, y):
-        """ Fit Naive Bayes classifier according to X, y. """
         for feature, label in zip(X, y):
             self.class_freq[label] += 1
             for value in feature:
                 self.feat_freq[(value, label)] += 1
 
-        # нормализация
         num_samples = len(X)
         for k in self.class_freq:
             self.class_freq[k] /= num_samples
@@ -33,8 +31,7 @@ class NaiveBayesClassifier:
 
     def predict(self, X):
         return [
-            max(self.class_freq.keys(), key=lambda c: self.calculate_class_freq(x, c))
-            for x in X
+            max(self.class_freq.keys(), key=lambda c: self.calculate_class_freq(x, c)) for x in X
         ]
 
     def calculate_class_freq(self, X, clss):

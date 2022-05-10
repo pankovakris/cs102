@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 
 
 def extract_news(parser):
-    """ Extract news from a given web page """
     news_list = []
     posts = parser.findAll("tr")[3]
     news = posts.td.find_all("tr", attrs={"class": "athing"})
@@ -15,9 +14,7 @@ def extract_news(parser):
             author = None
 
         if content[i].find("span", attrs={"class": "score"}):
-            points = int(
-                content[i].find("span", attrs={"class": "score"}).text.split()[0]
-            )
+            points = int(content[i].find("span", attrs={"class": "score"}).text.split()[0])
         else:
             points = 0
 
@@ -41,13 +38,11 @@ def extract_news(parser):
 
 
 def extract_next_page(parser):
-    """ Extract next page URL """
     body = parser.findAll("tr")[3]
     return body.td.find_all("td", attrs={"class": "title"})[-1].a["href"]
 
 
 def get_news(url, n_pages=1):
-    """ Collect news from a given web page """
     news = []
     while n_pages:
         print("Collecting data from page: {}".format(url))
