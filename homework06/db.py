@@ -1,12 +1,13 @@
-from sqlalchemy import Column, String, Integer
+# type: ignore
+from scraputils import get_news
+from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
 
 Base = declarative_base()
 engine = create_engine("sqlite:///news.db")
 session = sessionmaker(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 
 class News(Base):
@@ -19,4 +20,17 @@ class News(Base):
     points = Column(Integer)
     label = Column(String)
 
-Base.metadata.create_all(bind=engine)
+
+s = session()
+
+# news = get_news("https://news.ycombinator.com/newest", 35)
+# for new in news:
+#     elem = News(
+#         title = new['title'],
+#         author=new['author'],
+#         url = new['url'],
+#         comments = new['comments'],
+#         points = new['points'],
+#     )
+#     s.add(elem)
+# s.commit()
