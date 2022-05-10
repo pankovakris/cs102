@@ -1,3 +1,4 @@
+# type: ignore
 import csv
 import string
 from collections import defaultdict
