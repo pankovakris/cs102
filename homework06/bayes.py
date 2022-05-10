@@ -1,15 +1,15 @@
+import csv
+import string
+from collections import defaultdict
+
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.pipeline import Pipeline
-from sklearn.feature_extraction.text import TfidfVectorizer
-from collections import defaultdict
-from sklearn.metrics import accuracy_score
-import numpy as np
-import string
-import csv
 
 
 class NaiveBayesClassifier:
-
     def __init__(self, alpha=0):
         self.class_freq = defaultdict(lambda: 0)
         self.feat_freq = defaultdict(lambda: 0)
@@ -32,21 +32,22 @@ class NaiveBayesClassifier:
         return self
 
     def predict(self, X):
-        return [max(self.class_freq.keys(),
-                   key=lambda c: self.calculate_class_freq(x, c)) for x in X]
+        return [
+            max(self.class_freq.keys(), key=lambda c: self.calculate_class_freq(x, c))
+            for x in X
+        ]
 
     def calculate_class_freq(self, X, clss):
-        freq = - np.log(self.class_freq[clss])
+        freq = -np.log(self.class_freq[clss])
 
         for feat in X:
-            freq += - np.log(self.feat_freq.get((feat, clss), 10 ** (-7)))
+            freq += -np.log(self.feat_freq.get((feat, clss), 10 ** (-7)))
         return freq
 
     def score(self, X_test, y_test):
         predictions = self.predict(X_test)
-        print('pred', predictions)
+        print("pred", predictions)
         return accuracy_score(predictions, y_test)
-
 
 
 # def clean(s):
